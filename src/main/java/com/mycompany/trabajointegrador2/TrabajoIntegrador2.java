@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- */
-
 package com.mycompany.trabajointegrador2;
 
 import java.io.BufferedReader;
@@ -9,10 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- *
- * @author feder
- */
+
 public class TrabajoIntegrador2 {
 
     public static void main(String[] args) {
