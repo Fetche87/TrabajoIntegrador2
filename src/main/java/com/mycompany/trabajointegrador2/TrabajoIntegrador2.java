@@ -25,9 +25,9 @@ public class TrabajoIntegrador2 {
                 
                 String[] partidoComoArreglo = linea.split(separadorComa);
                     
-                Equipo equipo1 = new Equipo(partidoComoArreglo[0]);
-                Equipo equipo2 = new Equipo(partidoComoArreglo[3]);
-                partidos.add(new Partido(equipo1, Integer.valueOf(partidoComoArreglo[1]), Integer.valueOf(partidoComoArreglo[2]), equipo2));
+                Equipo equipo1 = new Equipo(partidoComoArreglo[1]);
+                Equipo equipo2 = new Equipo(partidoComoArreglo[4]);
+                partidos.add(new Partido(equipo1, Integer.valueOf(partidoComoArreglo[2]), Integer.valueOf(partidoComoArreglo[3]), equipo2));
                 
             }
         } catch (IOException e) {
@@ -47,12 +47,11 @@ public class TrabajoIntegrador2 {
         }
         
         final String archivoPronosticos = "pronostico.csv";
-        //final String separadorComa = ";";
+        
         
 
         ArrayList <Pronostico> pronosticos = new ArrayList<>();
-        //FileReader fileReader = null;
-        //BufferedReader bufferedReader = null;
+        
 
         try {
             fileReader = new FileReader(archivoPronosticos);
@@ -62,12 +61,12 @@ public class TrabajoIntegrador2 {
                 
                 String[] pronosticoComoArreglo = linea.split(separadorComa);
                 ResultadoEnum resultado = ResultadoEnum.EMPATE;
-                Partido partido = BuscarPartidoPorNombreEquipos(partidos,pronosticoComoArreglo[0],pronosticoComoArreglo[4]);
+                Partido partido = BuscarPartidoPorNombreEquipos(partidos,pronosticoComoArreglo[1],pronosticoComoArreglo[5]);
                
-                if ("x".equals(pronosticoComoArreglo[1])) {
+                if ("x".equals(pronosticoComoArreglo[2])) {
                     resultado = ResultadoEnum.GANA_EQUIPO_1;
                     
-                } else if ("x".equals(pronosticoComoArreglo[3]) ) {
+                } else if ("x".equals(pronosticoComoArreglo[4]) ) {
                     resultado = ResultadoEnum.GANA_EQUIPO_2;
                 }
                 pronosticos.add(new Pronostico(partido , resultado)); 
