@@ -5,6 +5,7 @@ public class Pronostico {
     private ResultadoEnum resultado;
     private int puntaje;
     private String persona;
+    public static final int PUNTAJE_POR_ACIERTO = 1;
     
     
     
@@ -32,7 +33,7 @@ public class Pronostico {
         
             ResultadoEnum resultadoReal = this.partido.decidirResultado();
             if (resultadoReal == this.resultado) {
-                return 1;
+                return PUNTAJE_POR_ACIERTO;
             } 
         
             return 0;
