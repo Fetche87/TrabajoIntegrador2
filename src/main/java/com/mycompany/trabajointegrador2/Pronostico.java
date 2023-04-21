@@ -27,6 +27,10 @@ public class Pronostico {
         return persona;
     }
     
+    public Partido getPartido(){
+        return partido;
+    }
+    
     
 
     public int calcularPuntajePronostico(){

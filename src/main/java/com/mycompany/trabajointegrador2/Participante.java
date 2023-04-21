@@ -17,6 +17,11 @@ public class Participante {
         return nombre;
     }
 
+    public ArrayList<Pronostico> getPronosticos() {
+        return pronosticos;
+    }
+
+    
     public int getPuntaje() {
         return puntaje;
     }

@@ -15,6 +15,8 @@ public class TrabajoIntegrador2 {
         
     
         ArrayList <Partido> partidos = new ArrayList<>();
+        ArrayList <Ronda> rondas = new ArrayList<>();
+        
         FileReader fileReader = null;
         BufferedReader bufferedReader = null;
         int cantidadDeRondas = 0;
@@ -25,6 +27,8 @@ public class TrabajoIntegrador2 {
             fileReader = new FileReader(archivoResultados);
             bufferedReader = new BufferedReader (fileReader);
             String linea;
+            int numeroRonda = 0;
+            
             while((linea = bufferedReader.readLine()) !=null){
                 
                 String[] partidoComoArreglo = linea.split(separadorComa);
@@ -37,29 +41,33 @@ public class TrabajoIntegrador2 {
                     return;
                 }
                 
-                int numeroRonda = 0;
+                
+                int numeroDeLaRonda = 0;
                 int golesEquipo1 = 0;
                 int golesEquipo2 = 0;
-                
                 try{
-                    numeroRonda = Integer.valueOf(partidoComoArreglo[0]);
+                    numeroDeLaRonda = Integer.valueOf(partidoComoArreglo[0]);
                     golesEquipo1 = Integer.valueOf(partidoComoArreglo[2]);
                     golesEquipo2 = Integer.valueOf(partidoComoArreglo[3]);
                     
                 } catch (NumberFormatException e) {
                     System.out.println("El o los campos número de ronda o goles no son números enteros.");
                 }
-                if (numeroRonda > cantidadDeRondas){
-                    cantidadDeRondas = numeroRonda;
+                if (numeroDeLaRonda > cantidadDeRondas){
+                    cantidadDeRondas = numeroDeLaRonda;
                 }
                 
-                partidos.add(new Partido(numeroRonda, equipo1, golesEquipo1, golesEquipo2, equipo2));
+                partidos.add(new Partido(numeroDeLaRonda, equipo1, golesEquipo1, golesEquipo2, equipo2));
                 
+                
+                
+                if (Integer.valueOf(partidoComoArreglo[0]) != numeroRonda) {
+                    numeroRonda = Integer.valueOf(partidoComoArreglo[0]);
+                    rondas.add(new Ronda(numeroRonda));
+                }
             }
         } catch (IOException e) {
             System.out.println("Excepción leyendo archivo: " + e.getMessage());
-            
-            
         } finally {
             try {
                     if (fileReader != null) {
@@ -76,14 +84,14 @@ public class TrabajoIntegrador2 {
         
         
         
-        /*for (Partido partido : partidos){
-            for (Ronda ronda : numeroRonda){
-                if (partido.getPersona() == participante.getNombre()){
-                    participante.agregarPronostico(partido);
+        for (Partido partido : partidos){
+            for (Ronda ronda : rondas){
+                if (partido.getNumeroRonda() == ronda.getNumeroRonda()){
+                    ronda.agregarPartido(partido);
                 }
             }
             
-        }*/
+        }
         
         
         final String archivoPronosticos = "pronostico.csv";
@@ -133,7 +141,7 @@ public class TrabajoIntegrador2 {
             }
             
         }
-        int numeroLinea = 0;
+        
         
         try {
             fileReader = new FileReader(archivoPronosticos);
@@ -175,24 +183,6 @@ public class TrabajoIntegrador2 {
         }
         
         
-        
-        /*
-        Partido[] partidosRonda = new Partido[cantidadDePartidosPorRonda];
-        //System.out.println(cantidadDeRondas);
-        //System.out.println(cantidadDePartidosPorRonda);
-        for (int i = 0; i <= cantidadDeRondas; i++){
-            int  = 0;    
-            
-            for (Partido partido : partidos){
-                    if (i + 1 == Integer.valueOf(partido.getNumeroRonda().getNumeroRonda())){
-                    partidosRonda[posicion] = partido;
-                    posicion += 1;
-                }
-                    
-            }
-            
-        }*/
-        
         /*        
         int puntajeFinalPersona = 0;
         for (Pronostico pronostico : pronosticos){
@@ -201,6 +191,22 @@ public class TrabajoIntegrador2 {
         }*/
         
         //System.out.println("El resultado final es de :" + puntajeFinalPersona);
+        for (Ronda ronda : rondas){
+            for (Partido partido : ronda.getPartidos()){
+                for (Participante participante : participantes){
+                    ronda.agregarPronostico(BuscarPronosticoPorPartido(participante.getPronosticos(),partido));
+                }
+                
+            }
+            
+        }
+        
+        
+        for (Ronda ronda : rondas){
+            ronda.calcularPuntajeRonda();
+            System.out.println("El puntaje total de la ronda " + ronda.getNumeroRonda() + " es de :" + ronda.getPuntajeRonda());
+        }
+        
         for (Participante participante : participantes){
             participante.calcularAciertos();
             participante.calcularPuntaje();
@@ -218,5 +224,9 @@ public class TrabajoIntegrador2 {
                 return partidoEncontrado;
     }
     
-    
+    public static Pronostico BuscarPronosticoPorPartido(ArrayList<Pronostico> pronosticos, Partido partido) {
+        Pronostico pronosticoEncontrado = pronosticos.stream().filter(pronostico -> pronostico.getPartido().equals(partido)).findAny().orElse(null);
+            return pronosticoEncontrado;
+        
+    }
 }
